@@ -1,19 +1,31 @@
-%Test 1
-clear; close all; clc;
+clear; clc; close all;
 
-Fs = 44100;
-jazz = webread('https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Dee_Yan-Key/Lounge_Jazz_Symphony/Dee_Yan-Key_-_02_-_II_Intermezzo__Broadly.mp3');
-jazz = mean(jazz.').';
-jazz = jazz(1 : 5 * Fs);
-electronic = webread('https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Music_for_Video/Andrew_Codeman/Ice_Country/Andrew_Codeman_-_04_-_Run.mp3');
-electronic = mean(electronic.').';
-electronic = electronic(1:5 * Fs);
-country = webread('https://files.freemusicarchive.org/storage-freemusicarchive-org/music/KBOO/miller_and/Live_at_KBOO_for_The_Noontime_Jamboree_08142017/miller_and_-_02_-_Miller_and_Sasser-Country_Song-Aug_2017-LIVE.mp3');
-country = mean(country.').';
-country = country(1:5 * Fs);
+load('cam1_1.mat')
+load('cam1_2.mat')
+load('cam1_3.mat')
+load('cam1_4.mat')
+load('cam2_1.mat')
+load('cam2_2.mat')
+load('cam2_3.mat')
+load('cam2_4.mat')
+load('cam3_1.mat')
+load('cam3_2.mat')
+load('cam3_3.mat')
+load('cam3_4.mat')
 
-jspec = abs(spectrogram(jazz));
-espec = abs(spectrogram(electronic));
-cspec = abs(spectrogram(country));
-[U,S,V] = svd([jspec espec cspec], 'econ');
+%Grayscale and cropping
+numFrames = size(vidFrames1_1,4);
+frame1 = zeros(480,640,numFrames);
+for j = 1:numFrames
+    frame1(:,:,j) = rgb2gray(vidFrames1_1(:,:,:,j));
+end
+%cropped1_1 = zeros(size(frame1));
+%for j = 1:numFrames
+%    x = frame1(:,:,j);
+%    x(1:192,:) = 0;
+%    x(288:end,:) = 0;
+%    cropped1_1(:,:,j) = x;
+%end
 
+%point tracker
+pointTracker = vision.PointTracker; 
